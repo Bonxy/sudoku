@@ -135,7 +135,7 @@
     }
     el.addEventListener('pointerdown', function (e) {
       var t = e.target.closest('.cell'); if (!t) return;
-      selected = +t.dataset.i; render();
+      selected = +t.dataset.i; autoNotes(); render();
     });
     var pad = $('#pad');
     for (var d = 1; d <= 9; d++) {
@@ -226,7 +226,15 @@
     S.checks++;
     render(); markDirty();
   }
-  function toggleNotes() { notesMode = !notesMode; render(); }
+  function toggleNotes() { notesMode = !notesMode; autoNotes(); render(); }
+  // notes mode + empty cell with no notes yet: fill in every digit not already in its row/col/box
+  function autoNotes() {
+    if (!notesMode || !editable() || board[selected] || notes[selected]) return;
+    var m = 0x3FE;
+    Solver.PEERS[selected].forEach(function (p) { if (board[p]) m &= ~(1 << board[p]); });
+    if (!m) return;
+    pushUndo(); notes[selected] = m; markDirty();
+  }
   function setHelper(on) {
     if (on && !helperOn && playing()) { S.hints++; markDirty(); }
     helperOn = on;
@@ -455,7 +463,7 @@
         if (mv === -1) c = (c + 8) % 9; if (mv === 1) c = (c + 1) % 9;
         selected = r * 9 + c;
       }
-      render(); e.preventDefault(); return;
+      autoNotes(); render(); e.preventDefault(); return;
     }
     var k = e.key.toLowerCase();
     if (k === 'n') toggleNotes();
