@@ -1,0 +1,4 @@
+# Block the git folder, tools and docs from the web
+RedirectMatch 404 /\.git
+RedirectMatch 404 /tools/
+RedirectMatch 404 /(README\.md|\.gitignore|config\.sample\.php)$
