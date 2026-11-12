@@ -1,3 +1,6 @@
+# Run this folder on PHP 8.3 (cPanel EasyApache), whatever the domain default is
+AddHandler application/x-httpd-ea-php83 .php
+
 # Block the git folder, tools and docs from the web
 RedirectMatch 404 /\.git
 RedirectMatch 404 /tools/
