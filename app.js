@@ -241,6 +241,7 @@
     updateHint(); render();
   }
   function updateHint() {
+    var prevHint = hintCell;
     hintCell = -1;
     if (!helperOn || !P || !playing()) return;
     var known = [], avoid = [];
@@ -251,6 +252,7 @@
     }
     var h = Solver.findHint(known, avoid);
     hintCell = h ? h.cell : -1;
+    if (hintCell >= 0 && hintCell !== prevHint) selected = hintCell;   // jump to the new helper cell
   }
   function afterChange() {
     updateHint(); render(); markDirty();
