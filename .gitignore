@@ -1,0 +1,5 @@
+config.php
+data/current.json
+data/log.json
+data/*.tmp
+data/.lock
